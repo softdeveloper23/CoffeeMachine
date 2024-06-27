@@ -37,38 +37,33 @@ public class CoffeeMachine {
         System.out.println(neededMilk + " ml of milk");
         System.out.println(neededCoffeeBeans + " g of coffee beans");
 
-        if ((water == neededWater) && (milk == neededMilk) && (coffeeBeans == neededCoffeeBeans)) {
-            System.out.println("Yes, I can make that amount of coffee \n");
-
-            System.out.println("Starting to make a coffee...");
-            System.out.println("Grinding coffee beans...");
-            System.out.println("Boiling water...");
-            System.out.println("Mixing boiled water with crushed coffee beans...");
-            System.out.println("Pouring coffee into the cup...");
-            System.out.println("Pouring some milk into the cup...");
-            System.out.println("Coffee is ready!");
-
-        } else if ((water > neededWater) && (milk > neededMilk) && (coffeeBeans > neededCoffeeBeans)) {
-
-            while ((neededWater <= water) && (neededMilk <= milk) && (neededCoffeeBeans <= coffeeBeans)) {
-                neededWater = neededWater - water;
-                neededMilk = neededMilk - milk;
-                neededCoffeeBeans = neededCoffeeBeans - coffeeBeans;
-                cupsPossible ++;
+        if ((water >= neededWater) && (milk >= neededMilk) && (coffeeBeans >= neededCoffeeBeans)) {
+            while ((water >= reqWater) && (milk >= reqMilk) && (coffeeBeans >= reqCoffeeBeans)) {
+                water -= reqWater;
+                milk -= reqMilk;
+                coffeeBeans -= reqCoffeeBeans;
+                cupsPossible++;
             }
 
-            System.out.println("Yes, I can make that amount of coffee, plus " + cupsPossible + " more \n");
+            String message = "Yes, I can make that amount of coffee";
+            if (cupsPossible > cups) {
+                message += ", plus " + (cupsPossible - cups) + " more";
+            }
+            System.out.println(message + "\n"); // Combined output into one line
 
-            System.out.println("Starting to make a coffee...");
-            System.out.println("Grinding coffee beans...");
-            System.out.println("Boiling water...");
-            System.out.println("Mixing boiled water with crushed coffee beans...");
-            System.out.println("Pouring coffee into the cup...");
-            System.out.println("Pouring some milk into the cup...");
-            System.out.println("Coffee is ready!");
-
+            makeCoffee();
         } else {
             System.out.println("No, I can't make that amount of coffee");
         }
+    }
+
+    public static void makeCoffee() {
+        System.out.println("Starting to make a coffee...");
+        System.out.println("Grinding coffee beans...");
+        System.out.println("Boiling water...");
+        System.out.println("Mixing boiled water with crushed coffee beans...");
+        System.out.println("Pouring coffee into the cup...");
+        System.out.println("Pouring some milk into the cup...");
+        System.out.println("Coffee is ready!");
     }
 }
