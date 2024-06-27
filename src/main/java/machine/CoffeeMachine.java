@@ -14,8 +14,6 @@ public class CoffeeMachine {
         int milk = 0;
         int coffeeBeans = 0;
 
-        int cupsPossible = 0;
-
         System.out.println("Write how many ml of water the coffee machine has:");
         water = scanner.nextInt();
 
@@ -37,6 +35,10 @@ public class CoffeeMachine {
         System.out.println(neededMilk + " ml of milk");
         System.out.println(neededCoffeeBeans + " g of coffee beans");
 
+        int cupsPossible = Math.min(
+                Math.min(water / reqWater, milk / reqMilk),
+                coffeeBeans / reqCoffeeBeans);
+
         if ((water >= neededWater) && (milk >= neededMilk) && (coffeeBeans >= neededCoffeeBeans)) {
             while ((water >= reqWater) && (milk >= reqMilk) && (coffeeBeans >= reqCoffeeBeans)) {
                 water -= reqWater;
@@ -45,18 +47,19 @@ public class CoffeeMachine {
                 cupsPossible++;
             }
 
-            String message = "Yes, I can make that amount of coffee";
-            if (cupsPossible > cups) {
-                message += ", plus " + (cupsPossible - cups) + " more";
+            if (cupsPossible >= cups) {
+                if (cupsPossible > cups) {
+                    System.out.println("Yes, I can make that amount of coffee (and even " + (cupsPossible - cups) + " more than that)");
+                    makeCoffee();
+                } else {
+                    System.out.println("Yes, I can make that amount of coffee");
+                    makeCoffee();
+                }
+            } else {
+                System.out.println("No, I can make only " + cupsPossible + " cup(s) of coffee");
             }
-            System.out.println(message + "\n"); // Combined output into one line
-
-            makeCoffee();
-        } else {
-            System.out.println("No, I can't make that amount of coffee");
-        }
     }
-
+}
     public static void makeCoffee() {
         System.out.println("Starting to make a coffee...");
         System.out.println("Grinding coffee beans...");
