@@ -2,7 +2,6 @@ package machine;
 
 import java.util.Scanner;
 
-
 public class CoffeeMachine {
     private int water;
     private int milk;
@@ -11,6 +10,7 @@ public class CoffeeMachine {
     private int money;
 
     public CoffeeMachine() {
+        // Initialize with the starting amounts
         this.water = 400;
         this.milk = 540;
         this.coffeeBeans = 120;
@@ -20,12 +20,15 @@ public class CoffeeMachine {
 
     public void start() {
         Scanner scanner = new Scanner(System.in);
-            printState();
-            System.out.println("\nWrite action (buy, fill, take): ");
+        while (true) {
+            System.out.println("\nWrite action (buy, fill, take, remaining, exit): ");
             String action = scanner.nextLine();
+            if (action.equals("exit")) {
+                break;
+            }
             processAction(action, scanner);
-            printState();
         }
+    }
 
     private void processAction(String action, Scanner scanner) {
         switch (action) {
@@ -38,13 +41,14 @@ public class CoffeeMachine {
             case "take":
                 take();
                 break;
-            default:
+            case "remaining":
+                printState();
                 break;
         }
     }
 
     private void buy(Scanner scanner) {
-        System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino: ");
+        System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back - to main menu: ");
         String choice = scanner.nextLine();
         switch (choice) {
             case "1":
@@ -56,18 +60,30 @@ public class CoffeeMachine {
             case "3":
                 makeCoffee(200, 100, 12, 6);
                 break;
+            case "back":
+                // Do nothing, this will return to the main menu
+                break;
+            default:
+                System.out.println("Invalid choice");
         }
     }
 
     private void makeCoffee(int waterNeeded, int milkNeeded, int beansNeeded, int cost) {
         if (water >= waterNeeded && milk >= milkNeeded && coffeeBeans >= beansNeeded && disposableCups >= 1) {
+            System.out.println("I have enough resources, making you a coffee!");
             water -= waterNeeded;
             milk -= milkNeeded;
             coffeeBeans -= beansNeeded;
-            disposableCups --;
+            disposableCups--;
             money += cost;
+        } else if (water < waterNeeded) {
+            System.out.println("Sorry, not enough water!");
+        } else if ( milk < milkNeeded) {
+            System.out.println("Sorry, not enough milk!");
+        } else if ( coffeeBeans < beansNeeded) {
+            System.out.println("Sorry, not enough coffee beans!");
         } else {
-            System.out.println("Sorry, not enough resources!");
+            System.out.println("Sorry, not enough disposable cups!");
         }
     }
 
