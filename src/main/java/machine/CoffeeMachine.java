@@ -1,3 +1,7 @@
+/**
+ * A working coffee machine
+ */
+
 package machine;
 
 import java.util.Scanner;
