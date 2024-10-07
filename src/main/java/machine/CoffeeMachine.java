@@ -1,3 +1,7 @@
+/**
+ * A working coffee machine
+ */
+
 package machine;
 
 import java.util.Scanner;
@@ -8,6 +12,8 @@ public class CoffeeMachine {
     private int coffeeBeans;
     private int disposableCups;
     private int money;
+    private int coffeesMade;
+    private boolean needsCleaning;
 
     public CoffeeMachine() {
         // Initialize with the starting amounts
@@ -16,12 +22,14 @@ public class CoffeeMachine {
         this.coffeeBeans = 120;
         this.disposableCups = 9;
         this.money = 550;
+        this.coffeesMade = 0;
+        this.needsCleaning = false;
     }
 
     public void start() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("\nWrite action (buy, fill, take, remaining, exit): ");
+            System.out.println("\nWrite action (buy, fill, take, clean, remaining, exit): ");
             String action = scanner.nextLine();
             if (action.equals("exit")) {
                 break;
@@ -33,13 +41,20 @@ public class CoffeeMachine {
     private void processAction(String action, Scanner scanner) {
         switch (action) {
             case "buy":
-                buy(scanner);
+                if (needsCleaning) {
+                    System.out.println("I need cleaning!");
+                } else {
+                    buy(scanner);
+                }
                 break;
             case "fill":
                 fill(scanner);
                 break;
             case "take":
                 take();
+                break;
+            case "clean":
+                clean();
                 break;
             case "remaining":
                 printState();
@@ -76,6 +91,12 @@ public class CoffeeMachine {
             coffeeBeans -= beansNeeded;
             disposableCups--;
             money += cost;
+            coffeesMade++;
+
+            if (coffeesMade >= 10) {
+                needsCleaning = true;
+                System.out.println("I need cleaning after this cup!");
+            }
         } else if (water < waterNeeded) {
             System.out.println("Sorry, not enough water!");
         } else if ( milk < milkNeeded) {
@@ -104,6 +125,16 @@ public class CoffeeMachine {
         money = 0;
     }
 
+    private void clean() {
+        if (needsCleaning) {
+            needsCleaning = false;
+            coffeesMade = 0;
+            System.out.println("I have been cleaned!");
+        } else {
+            System.out.println("I don't need cleaning yet.");
+        }
+    }
+
     private void printState() {
         System.out.println("\nThe coffee machine has:");
         System.out.println(water + " ml of water");
@@ -111,6 +142,9 @@ public class CoffeeMachine {
         System.out.println(coffeeBeans + " g of coffee beans");
         System.out.println(disposableCups + " disposable cups");
         System.out.println("$" + money + " of money");
+        if (needsCleaning) {
+            System.out.println("I need cleaning!");
+        }
     }
 
     public static void main(String[] args) {
